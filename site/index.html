@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Morrow — A longitudinal model of you</title>
+    <title>Baseline — Off your baseline?</title>
     <meta
       name="description"
-      content="Morrow learns how a person’s emotional and behavioral patterns change over time, notices sustained shifts relative to their own baseline, and recommends human support when AI isn’t enough."
+      content="Baseline learns how a person’s emotional and behavioral patterns change over time, notices sustained shifts relative to their own baseline, and recommends human support when AI isn’t enough."
     />
     <meta name="theme-color" content="#fafaf7" />
-    <meta property="og:title" content="Morrow — A longitudinal model of you" />
+    <meta property="og:title" content="Baseline — Off your baseline?" />
     <meta
       property="og:description"
       content="Understand yourself sooner. A research-stage system for within-person modeling of affect and behavior."
@@ -27,17 +27,23 @@
   <body>
     <header class="nav">
       <div class="wrap nav-inner">
-        <a class="brand" href="./" aria-label="Morrow home">
+        <a class="brand" href="./" aria-label="Baseline home">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
-              d="M5 15.5a7 7 0 0 1 14 0"
+              d="M2.5 10.5h19"
               stroke="#121211"
-              stroke-width="1.6"
+              stroke-width="1.7"
+              stroke-linecap="round"
             />
-            <path d="M2.5 15.5h19" stroke="#121211" stroke-width="1.6" />
-            <path d="M7 19h10" stroke="#c4532e" stroke-width="1.6" />
+            <path
+              d="M12 10.5l3.5 6h6"
+              stroke="#c4532e"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
-          Morrow
+          Baseline
         </a>
         <nav class="nav-links" aria-label="Primary">
           <a class="hide-sm" href="#approach">Approach</a>
@@ -57,12 +63,10 @@
             <span class="dot" aria-hidden="true"></span>
             <span class="label">Research preview · 2026</span>
           </div>
-          <h1 class="display reveal" data-delay="1">
-            A longitudinal<br />model of you.
-          </h1>
+          <h1 class="display reveal" data-delay="1">Off your baseline?</h1>
           <p class="lede reveal" data-delay="2">
-            Morrow learns your patterns over time and notices when something
-            actually shifts.
+            A longitudinal model of you. It learns your patterns over time and
+            notices when something actually shifts.
           </p>
           <div class="hero-ctas reveal" data-delay="3">
             <a class="btn btn-primary" href="#join"
@@ -75,90 +79,111 @@
       </section>
 
       <div class="stack">
-        <!-- How it works: sticky chart, steps scroll past and scrub the timeline -->
-        <section class="section" id="approach">
-          <div class="wrap">
-            <span class="label">How it works</span>
-            <div class="story">
-              <div class="story-stage">
-                <figure class="figure">
-                  <div class="figure-bar">
-                    <span>PAM-State · one participant</span>
-                    <span class="readout" data-readout="hero" aria-live="off"
-                      >wk 0.0 · estimating baseline</span
-                    >
+        <!-- How it works: pinned panel; steps flip in place and each one plays the chart forward -->
+        <section class="section story-section" id="approach">
+          <div class="story" data-steps="3">
+            <div class="story-pin">
+              <div class="wrap story-grid">
+                <div class="story-copy">
+                  <span class="label">How it works</span>
+                  <div class="story-steps" aria-live="polite">
+                    <div class="story-step is-active">
+                      <span class="mono">01</span>
+                      <h3>Learn</h3>
+                      <p>
+                        A personalized baseline, built from months of
+                        conversation.
+                      </p>
+                    </div>
+                    <div class="story-step">
+                      <span class="mono">02</span>
+                      <h3>Notice</h3>
+                      <p>
+                        Sustained change, measured against your own history.
+                      </p>
+                    </div>
+                    <div class="story-step">
+                      <span class="mono">03</span>
+                      <h3>Connect</h3>
+                      <p>
+                        A human therapist who fits you, when AI is not enough.
+                      </p>
+                    </div>
                   </div>
-                  <div class="figure-body">
-                    <div
-                      class="chart chart-hero"
-                      data-chart="hero"
-                      data-label="Latent affect trajectory over 24 weeks, staying within a personalized baseline band before a sustained downward change around week 17."
-                    ></div>
+                  <div class="story-nav" role="tablist" aria-label="Steps">
+                    <button type="button" class="is-active" data-step="0">
+                      Learn
+                    </button>
+                    <button type="button" data-step="1">Notice</button>
+                    <button type="button" data-step="2">Connect</button>
                   </div>
-                  <div class="figure-legend">
-                    <span><i class="key key-line"></i>latent state ẑₜ</span>
-                    <span><i class="key key-ci"></i>90% interval</span>
-                    <span><i class="key key-band"></i>personal baseline</span>
-                    <span><i class="key key-dot"></i>conversation</span>
-                    <span><i class="key key-cp"></i>change point</span>
-                  </div>
-                  <div class="match-strip">
-                    <div class="ms-inner">
-                      <div class="ms-head">
-                        <span class="flag">referral offered · 3 matches</span
-                        ><span class="factors"
-                          >modality · specialization · language · availability ·
-                          style · your preferences</span
-                        >
-                      </div>
-                      <div class="ms-rows">
-                        <div class="ms-item">
-                          <b>Clinician A</b><small>CBT · EN/ES · Tue eve</small>
-                          <div class="ms-score">
-                            <span class="bar"><i style="--w: 91%"></i></span
-                            ><span class="mono">0.91</span>
-                          </div>
+                </div>
+
+                <div class="story-stage">
+                  <figure class="figure">
+                    <div class="figure-bar">
+                      <span>PAM-State · one participant</span>
+                      <span class="readout" data-readout="hero" aria-live="off"
+                        >wk 0.0 · estimating baseline</span
+                      >
+                    </div>
+                    <div class="figure-body">
+                      <div
+                        class="chart chart-hero"
+                        data-chart="hero"
+                        data-label="Latent affect trajectory over 24 weeks, staying within a personalized baseline band before a sustained downward change around week 17."
+                      ></div>
+                    </div>
+                    <div class="figure-legend">
+                      <span><i class="key key-line"></i>latent state ẑₜ</span>
+                      <span><i class="key key-ci"></i>90% interval</span>
+                      <span><i class="key key-band"></i>personal baseline</span>
+                      <span><i class="key key-dot"></i>conversation</span>
+                      <span><i class="key key-cp"></i>change point</span>
+                    </div>
+                    <div class="match-strip">
+                      <div class="ms-inner">
+                        <div class="ms-head">
+                          <span class="flag">referral offered · 3 matches</span
+                          ><span class="factors"
+                            >modality · specialization · language · availability
+                            · style · your preferences</span
+                          >
                         </div>
-                        <div class="ms-item">
-                          <b>Clinician B</b><small>IPT · EN · weekends</small>
-                          <div class="ms-score">
-                            <span class="bar"><i style="--w: 84%"></i></span
-                            ><span class="mono">0.84</span>
+                        <div class="ms-rows">
+                          <div class="ms-item">
+                            <b>Clinician A</b
+                            ><small>CBT · EN/ES · Tue eve</small>
+                            <div class="ms-score">
+                              <span class="bar"><i style="--w: 91%"></i></span
+                              ><span class="mono">0.91</span>
+                            </div>
                           </div>
-                        </div>
-                        <div class="ms-item">
-                          <b>Clinician C</b><small>DBT · EN · Mon am</small>
-                          <div class="ms-score">
-                            <span class="bar"><i style="--w: 72%"></i></span
-                            ><span class="mono">0.72</span>
+                          <div class="ms-item">
+                            <b>Clinician B</b><small>IPT · EN · weekends</small>
+                            <div class="ms-score">
+                              <span class="bar"><i style="--w: 84%"></i></span
+                              ><span class="mono">0.84</span>
+                            </div>
+                          </div>
+                          <div class="ms-item">
+                            <b>Clinician C</b><small>DBT · EN · Mon am</small>
+                            <div class="ms-score">
+                              <span class="bar"><i style="--w: 72%"></i></span
+                              ><span class="mono">0.72</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </figure>
-              </div>
-
-              <div class="story-steps">
-                <div class="story-step">
-                  <span class="mono">01</span>
-                  <h3>Learn</h3>
-                  <p>
-                    A personalized baseline, built from months of conversation.
-                  </p>
-                </div>
-                <div class="story-step">
-                  <span class="mono">02</span>
-                  <h3>Notice</h3>
-                  <p>Sustained change, measured against your own history.</p>
-                </div>
-                <div class="story-step">
-                  <span class="mono">03</span>
-                  <h3>Connect</h3>
-                  <p>A human therapist who fits you, when AI is not enough.</p>
+                  </figure>
                 </div>
               </div>
             </div>
+            <!-- scroll-snap targets, one per step -->
+            <div class="story-snap" style="top: 0"></div>
+            <div class="story-snap" style="top: 100vh"></div>
+            <div class="story-snap" style="top: 200vh"></div>
           </div>
         </section>
 
@@ -243,7 +268,7 @@
               <span class="label">Related research</span>
               <div>
                 <h2 class="h2">Work we build on.</h2>
-                <p class="body">External papers. Not Morrow publications.</p>
+                <p class="body">External papers. Not Baseline publications.</p>
               </div>
             </div>
 
@@ -336,9 +361,7 @@
           <div class="wrap">
             <div class="section-head reveal">
               <span class="label">Company</span>
-              <h2 class="h2">
-                The <i><b>international</b></i> team.
-              </h2>
+              <h2 class="h2">The &nbsp;<i>international</i>&nbsp; team.</h2>
             </div>
 
             <div class="people">
@@ -415,6 +438,7 @@
                 action="thanks.html"
                 data-netlify="true"
                 netlify-honeypot="company-url"
+                netlify
               >
                 <input
                   type="hidden"
@@ -453,7 +477,7 @@
         <footer class="footer">
           <div class="wrap">
             <div class="footer-inner">
-              <span>© 2026 Morrow Labs, Inc.</span>
+              <span>© 2026 Baseline Labs, Inc.</span>
               <nav class="footer-links" aria-label="Footer">
                 <a href="research.html">Research</a>
                 <a href="#approach">Approach</a>

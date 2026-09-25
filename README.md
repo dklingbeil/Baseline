@@ -1,6 +1,6 @@
-# Morrow
+# Baseline
 
-Static marketing site for Morrow, a (fictional) research-stage startup building longitudinal, within-person models of affect.
+Static marketing site for Baseline, a (fictional) research-stage startup building longitudinal, within-person models of affect.
 
 ## Structure
 

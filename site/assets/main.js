@@ -1,4 +1,4 @@
-/* Morrow — charts and page behavior. No dependencies. */
+/* Baseline — charts and page behavior. No dependencies. */
 (function () {
   "use strict";
 
@@ -124,7 +124,7 @@
   function renderHero(container) {
     var W = Math.max(300, container.clientWidth);
     var narrow = W < 560;
-    var H = Math.round(Math.min(440, Math.max(250, W * 0.58)));
+    var H = Math.round(Math.max(220, Math.min(440, W * 0.56, window.innerHeight * 0.4)));
     var m = { l: narrow ? 30 : 44, r: narrow ? 8 : 18, t: 34, b: 30 };
     var svg = svgFor(container, W, H);
     var d = HERO;
@@ -446,6 +446,60 @@
 
   function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
+  // ---------- story step state + chart tween ----------
+
+  var STEP_T = [16.4, 24, 24];
+  var storyNav = story ? [].slice.call(story.querySelectorAll(".story-nav button")) : [];
+  var currentStep = null;
+  var tweenId = 0;
+
+  function tweenChart(target) {
+    if (!storyChart) return;
+    var from = storyChart.__t || 0;
+    var id = ++tweenId;
+    if (reduceMotion || from === target) {
+      storyChart.__t = target;
+      if (storyChart.__setT) storyChart.__setT(target);
+      return;
+    }
+    var dur = Math.min(1600, 300 + Math.abs(target - from) * 70);
+    var t0 = performance.now();
+    function frame(now) {
+      if (id !== tweenId) return;
+      var k = Math.min(1, (now - t0) / dur);
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      storyChart.__t = from + (target - from) * e;
+      if (storyChart.__setT) storyChart.__setT(storyChart.__t);
+      if (k < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function setStoryStep(step) {
+    if (step === currentStep) return;
+    currentStep = step;
+    var shown = Math.max(0, step);
+    storySteps.forEach(function (s, i) {
+      s.classList.toggle("is-active", i === shown);
+      s.classList.toggle("is-past", i < shown);
+    });
+    storyNav.forEach(function (b, i) {
+      b.classList.toggle("is-active", i === shown);
+      b.setAttribute("aria-selected", i === shown ? "true" : "false");
+    });
+    if (storyFig) storyFig.classList.toggle("is-connect", step === 2);
+    tweenChart(step < 0 ? 0 : STEP_T[step]);
+  }
+
+  storyNav.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var i = +b.getAttribute("data-step");
+      var top = story.getBoundingClientRect().top + window.scrollY;
+      var span = story.offsetHeight - window.innerHeight;
+      window.scrollTo({ top: top + (span * (i + 0.5)) / storySteps.length, behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  });
+
   function onScrollFrame() {
     var vh = window.innerHeight;
 
@@ -456,22 +510,16 @@
       heroInner.style.transform = "translateY(" + (-k * 40) + "px) scale(" + (1 - k * 0.03) + ")";
     }
 
-    // story: steps scroll past a sticky chart; progress scrubs the timeline
+    // story: pinned panel; scroll position picks a step, the step change is discrete
     if (story && storySteps.length) {
-      var mobile = window.innerWidth <= 900;
-      var line = vh * (mobile ? 0.82 : 0.5);
-      var first = storySteps[0].getBoundingClientRect();
-      var last = storySteps[storySteps.length - 1].getBoundingClientRect();
-      var p = clamp01((line - first.top) / (last.bottom - first.top));
-      var t = p < 0.36 ? (p / 0.36) * 16.4 : p < 0.64 ? 16.4 + ((p - 0.36) / 0.28) * 7.6 : 24;
-      if (storyChart) {
-        storyChart.__t = t;
-        if (storyChart.__setT) storyChart.__setT(t);
+      var r0 = story.getBoundingClientRect();
+      var step;
+      if (r0.top > vh * 0.35) step = -1; // not yet reached
+      else {
+        var span = r0.height - vh;
+        step = Math.min(storySteps.length - 1, Math.floor(clamp01(-r0.top / span) * storySteps.length * 0.999));
       }
-      if (storyFig) storyFig.classList.toggle("is-connect", p > 0.68);
-      var active = 0;
-      storySteps.forEach(function (s, i) { if (s.getBoundingClientRect().top < line) active = i; });
-      storySteps.forEach(function (s, i) { s.classList.toggle("is-active", i === active); });
+      setStoryStep(step);
     }
 
     // statement: words fill in while pinned

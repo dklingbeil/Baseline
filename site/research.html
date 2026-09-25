@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Research — Morrow</title>
+  <title>Research — Baseline</title>
   <meta name="description" content="Working notes on the Personal Affect Model: longitudinal user representations, latent state estimation, change-point detection, uncertainty-aware inference, and therapist retrieval.">
   <meta name="theme-color" content="#fafaf7">
-  <meta property="og:title" content="Research — Morrow">
+  <meta property="og:title" content="Research — Baseline">
   <meta property="og:description" content="Working notes on within-person modeling of affect and behavior.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,9 +19,9 @@
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="./" aria-label="Morrow home">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 15.5a7 7 0 0 1 14 0" stroke="#121211" stroke-width="1.6"/><path d="M2.5 15.5h19" stroke="#121211" stroke-width="1.6"/><path d="M7 19h10" stroke="#c4532e" stroke-width="1.6"/></svg>
-      Morrow
+    <a class="brand" href="./" aria-label="Baseline home">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 10.5h19" stroke="#121211" stroke-width="1.7" stroke-linecap="round"/><path d="M12 10.5l3.5 6h6" stroke="#c4532e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Baseline
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a class="hide-sm" href="./#approach">Approach</a>
@@ -44,7 +44,7 @@
       <div class="r-meta reveal" data-delay="3">
         <span>Status <b>working draft, v0.4</b></span>
         <span>Updated <b>September 2026</b></span>
-        <span>Evaluation <b>Morrow internal, not peer-reviewed</b></span>
+        <span>Evaluation <b>Baseline internal, not peer-reviewed</b></span>
       </div>
     </div>
   </section>
@@ -203,11 +203,11 @@
           <span class="eqn">(3)</span>
         </div>
         <p>
-          Baselines need data. Before about <span>\(n_0 = 21\)</span> sessions, the error is too large for deviations to mean much. Until then Morrow only reflects and never flags. Internal evaluation suggests baseline error falls roughly as <span>\(1/\sqrt{n}\)</span> in session count. It plateaus at a floor set mostly by how much users share in each session.
+          Baselines need data. Before about <span>\(n_0 = 21\)</span> sessions, the error is too large for deviations to mean much. Until then, the app only reflects and never flags. Internal evaluation suggests baseline error falls roughly as <span>\(1/\sqrt{n}\)</span> in session count. It plateaus at a floor set mostly by how much users share in each session.
         </p>
 
         <figure class="figure">
-          <div class="figure-bar"><span>Fig. 3 — Baseline estimation error vs. sessions</span><span>Morrow internal evaluation</span></div>
+          <div class="figure-bar"><span>Fig. 3 — Baseline estimation error vs. sessions</span><span>Baseline internal evaluation</span></div>
           <div class="figure-body"><div class="chart chart-sm" data-chart="baseline-error" data-label="Normalized baseline estimation error falling with session count, with lower floors for users in higher disclosure-depth terciles."></div></div>
         </figure>
         <p class="caption"><b>Fig. 3.</b> Normalized RMSE of <span>\(\hat\mu_u\)</span> against a held-out reference, stratified by disclosure-depth tercile. Disclosure depth is an annotator-rated score of how much personal information a session contains. PAM-24 cohort, n = 214.</p>
@@ -248,7 +248,7 @@
           <span class="eqn">(5)</span>
         </div>
         <p class="callout">
-          When Morrow is unsure, it asks rather than infers. A clarifying question is cheap. A confident, wrong statement about someone’s mental state is not.
+          When Baseline is unsure, it asks rather than infers. A clarifying question is cheap. A confident, wrong statement about someone’s mental state is not.
         </p>
         <p>
           Explicit risk language skips this policy entirely. It routes to crisis resources through deterministic rules, not a learned model.
@@ -266,7 +266,7 @@
           <span class="eqn">(6)</span>
         </div>
         <p>
-          The score combines semantic similarity, recency, and a learned salience term <span>\(\sigma_m\)</span>. Memory lets Morrow ask about things that matter to you without making you explain them again. Users can inspect, edit, and delete any memory entry. A deletion also removes the entry’s contribution to <span>\(e_u\)</span> at the next slow update.
+          The score combines semantic similarity, recency, and a learned salience term <span>\(\sigma_m\)</span>. Memory lets Baseline ask about things that matter to you without making you explain them again. Users can inspect, edit, and delete any memory entry. A deletion also removes the entry’s contribution to <span>\(e_u\)</span> at the next slow update.
         </p>
       </section>
 
@@ -281,7 +281,7 @@
           <span class="eqn">(7)</span>
         </div>
         <p>
-          The style term compares a projection of the user embedding with a clinician embedding. The clinician embedding comes from clinician-authored profile text, not from session content. Stated preferences, such as a therapist’s gender, identity, or approach, act as constraints rather than soft features, and always take priority over the model. Clinicians see nothing from a user’s Morrow history unless the user explicitly shares it.
+          The style term compares a projection of the user embedding with a clinician embedding. The clinician embedding comes from clinician-authored profile text, not from session content. Stated preferences, such as a therapist’s gender, identity, or approach, act as constraints rather than soft features, and always take priority over the model. Clinicians see nothing from a user’s Baseline history unless the user explicitly shares it.
         </p>
         <p>
           We plan to train the ranker on early-retention signals: whether a user attends a second and a third session. These are imperfect proxies for alliance, but they are available and hard to game.
@@ -292,11 +292,11 @@
         <span class="label">09</span>
         <h2>Within-subject evaluation</h2>
         <p>
-          Standard held-out-user accuracy rewards a model for sorting people, not for noticing change. <strong>PAM-24</strong> is our internal protocol. Consenting participants aged 18–29 use Morrow for 24 weeks and complete the PHQ-9 and GAD-7 every two weeks. A reference change point is a sustained shift of ≥5 points on either instrument across two consecutive assessments. The window for a correct detection is ±7 days.
+          Standard held-out-user accuracy rewards a model for sorting people, not for noticing change. <strong>PAM-24</strong> is our internal protocol. Consenting participants aged 18–29 use Baseline for 24 weeks and complete the PHQ-9 and GAD-7 every two weeks. A reference change point is a sustained shift of ≥5 points on either instrument across two consecutive assessments. The window for a correct detection is ±7 days.
         </p>
 
         <div class="tablewrap">
-          <div class="figure-bar"><span>Table 1 — PAM-24 results</span><span>Morrow internal evaluation · n = 214</span></div>
+          <div class="figure-bar"><span>Table 1 — PAM-24 results</span><span>Baseline internal evaluation · n = 214</span></div>
           <table>
             <thead>
               <tr><th>Model</th><th>CP-F1 ↑</th><th>Delay (d) ↓</th><th>False alerts/yr ↓</th><th>ECE ↓</th></tr>
@@ -313,7 +313,7 @@
         <p class="caption"><b>Table 1.</b> CP-F1 is change-point F1 within ±7 days. Delay is median days from the reference change to the first flag. False alerts are per user-year. ± shows 95% bootstrap intervals over participants. These results have not been independently validated or published.</p>
 
         <div class="tablewrap">
-          <div class="figure-bar"><span>Table 2 — Performance by engagement</span><span>Morrow internal evaluation</span></div>
+          <div class="figure-bar"><span>Table 2 — Performance by engagement</span><span>Baseline internal evaluation</span></div>
           <table>
             <thead>
               <tr><th>Disclosure-depth tercile</th><th>Sessions / wk</th><th>Median words / session</th><th>CP-F1 ↑</th></tr>
@@ -343,7 +343,7 @@
       <section id="related">
         <span class="label">11</span>
         <h2>Related work</h2>
-        <p>External research that informs our approach. None of these papers are Morrow work.</p>
+        <p>External research that informs our approach. None of these papers are Baseline work.</p>
         <ol class="refs">
           <li><div><span class="t">Mental-LLM: Leveraging Large Language Models for Mental Health Prediction via Online Text Data.</span> Xu et al., 2023. <a href="https://arxiv.org/abs/2307.14385" target="_blank" rel="noopener">arXiv:2307.14385</a></div></li>
           <li><div><span class="t">DialogueLLM: Context and Emotion Knowledge-Tuned Large Language Models for Emotion Recognition in Conversations.</span> Zhang et al., 2023. <a href="https://arxiv.org/abs/2310.11374" target="_blank" rel="noopener">arXiv:2310.11374</a></div></li>
@@ -369,7 +369,7 @@
 <footer class="footer">
   <div class="wrap">
     <div class="footer-inner">
-      <span>© 2026 Morrow Labs, Inc.</span>
+      <span>© 2026 Baseline Labs, Inc.</span>
       <nav class="footer-links" aria-label="Footer">
         <a href="./">Home</a>
         <a href="./#approach">Approach</a>
