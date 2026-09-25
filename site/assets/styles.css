@@ -971,3 +971,41 @@ td .ci { color: var(--faint); font-size: 11px; margin-left: 4px; }
   .figure-bar { flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; }
   .figure-bar .readout { text-align: left; }
 }
+
+/* =========================================================
+   Share page (hidden, /share)
+   ========================================================= */
+
+.share-page { min-height: 100vh; min-height: 100svh; }
+.share {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 4vh, 40px);
+  padding: max(24px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));
+  text-align: center;
+}
+.share-brand { position: absolute; top: max(20px, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); }
+.share-stage {
+  width: min(86vw, 52vh, 440px);
+  aspect-ratio: 1;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.share-stage canvas { width: 100%; height: 100%; display: block; }
+.share-title {
+  font-family: var(--serif);
+  font-weight: 350;
+  font-size: clamp(34px, 9vw, 52px);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  margin: 0;
+  font-variation-settings: "opsz" 60;
+}
+.share-url { margin: 10px 0 0; font-size: 12.5px; color: var(--muted); word-break: break-all; }
+.share-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; }
+.share-status { min-height: 20px; margin: 12px 0 0; font-size: 13px; color: var(--muted); }
