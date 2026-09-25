@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Morrow — A longitudinal model of you</title>
+    <meta
+      name="description"
+      content="Morrow learns how a person’s emotional and behavioral patterns change over time, notices sustained shifts relative to their own baseline, and recommends human support when AI isn’t enough."
+    />
+    <meta name="theme-color" content="#fafaf7" />
+    <meta property="og:title" content="Morrow — A longitudinal model of you" />
+    <meta
+      property="og:description"
+      content="Understand yourself sooner. A research-stage system for within-person modeling of affect and behavior."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,300..500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="./" aria-label="Morrow home">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M5 15.5a7 7 0 0 1 14 0"
+              stroke="#121211"
+              stroke-width="1.6"
+            />
+            <path d="M2.5 15.5h19" stroke="#121211" stroke-width="1.6" />
+            <path d="M7 19h10" stroke="#c4532e" stroke-width="1.6" />
+          </svg>
+          Morrow
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a class="hide-sm" href="#approach">Approach</a>
+          <a class="hide-sm" href="#modeling">Modeling</a>
+          <a href="research.html">Research</a>
+          <a class="hide-sm" href="#company">Company</a>
+          <a class="btn btn-primary btn-sm" href="#join">Join preview</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero: pinned, the page slides over it -->
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div class="hero-eyebrow reveal">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="label">Research preview · 2026</span>
+          </div>
+          <h1 class="display reveal" data-delay="1">
+            A longitudinal<br />model of you.
+          </h1>
+          <p class="lede reveal" data-delay="2">
+            Morrow learns your patterns over time and notices when something
+            actually shifts.
+          </p>
+          <div class="hero-ctas reveal" data-delay="3">
+            <a class="btn btn-primary" href="#join"
+              >Join research preview
+              <span class="arrow" aria-hidden="true">→</span></a
+            >
+            <a class="btn btn-ghost" href="research.html">Research</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="stack">
+        <!-- How it works: sticky chart, steps scroll past and scrub the timeline -->
+        <section class="section" id="approach">
+          <div class="wrap">
+            <span class="label">How it works</span>
+            <div class="story">
+              <div class="story-stage">
+                <figure class="figure">
+                  <div class="figure-bar">
+                    <span>PAM-State · one participant</span>
+                    <span class="readout" data-readout="hero" aria-live="off"
+                      >wk 0.0 · estimating baseline</span
+                    >
+                  </div>
+                  <div class="figure-body">
+                    <div
+                      class="chart chart-hero"
+                      data-chart="hero"
+                      data-label="Latent affect trajectory over 24 weeks, staying within a personalized baseline band before a sustained downward change around week 17."
+                    ></div>
+                  </div>
+                  <div class="figure-legend">
+                    <span><i class="key key-line"></i>latent state ẑₜ</span>
+                    <span><i class="key key-ci"></i>90% interval</span>
+                    <span><i class="key key-band"></i>personal baseline</span>
+                    <span><i class="key key-dot"></i>conversation</span>
+                    <span><i class="key key-cp"></i>change point</span>
+                  </div>
+                  <div class="match-strip">
+                    <div class="ms-inner">
+                      <div class="ms-head">
+                        <span class="flag">referral offered · 3 matches</span
+                        ><span class="factors"
+                          >modality · specialization · language · availability ·
+                          style · your preferences</span
+                        >
+                      </div>
+                      <div class="ms-rows">
+                        <div class="ms-item">
+                          <b>Clinician A</b><small>CBT · EN/ES · Tue eve</small>
+                          <div class="ms-score">
+                            <span class="bar"><i style="--w: 91%"></i></span
+                            ><span class="mono">0.91</span>
+                          </div>
+                        </div>
+                        <div class="ms-item">
+                          <b>Clinician B</b><small>IPT · EN · weekends</small>
+                          <div class="ms-score">
+                            <span class="bar"><i style="--w: 84%"></i></span
+                            ><span class="mono">0.84</span>
+                          </div>
+                        </div>
+                        <div class="ms-item">
+                          <b>Clinician C</b><small>DBT · EN · Mon am</small>
+                          <div class="ms-score">
+                            <span class="bar"><i style="--w: 72%"></i></span
+                            ><span class="mono">0.72</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </figure>
+              </div>
+
+              <div class="story-steps">
+                <div class="story-step">
+                  <span class="mono">01</span>
+                  <h3>Learn</h3>
+                  <p>
+                    A personalized baseline, built from months of conversation.
+                  </p>
+                </div>
+                <div class="story-step">
+                  <span class="mono">02</span>
+                  <h3>Notice</h3>
+                  <p>Sustained change, measured against your own history.</p>
+                </div>
+                <div class="story-step">
+                  <span class="mono">03</span>
+                  <h3>Connect</h3>
+                  <p>A human therapist who fits you, when AI is not enough.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Personalized modeling -->
+        <section class="section" id="modeling">
+          <div class="wrap">
+            <div class="section-head reveal">
+              <span class="label">Personalized modeling</span>
+              <div>
+                <h2 class="h2">
+                  Your normal isn’t<br />someone else’s normal.
+                </h2>
+                <p class="body">
+                  We model change within a person, not differences between
+                  people.
+                </p>
+              </div>
+            </div>
+
+            <div class="split">
+              <figure class="figure reveal">
+                <div class="figure-bar">
+                  <span>Population-level</span><span>one threshold</span>
+                </div>
+                <div class="figure-body">
+                  <div
+                    class="chart chart-sm"
+                    data-chart="population"
+                    data-label="Pooled data from three users with a single global threshold. A user with a low but stable baseline is repeatedly flagged; a user with a large drop from a high baseline is never flagged."
+                  ></div>
+                </div>
+              </figure>
+              <figure class="figure reveal" data-delay="1">
+                <div class="figure-bar">
+                  <span>Within-person</span><span>one baseline per user</span>
+                </div>
+                <div class="figure-body">
+                  <div
+                    class="chart chart-sm"
+                    data-chart="within"
+                    data-label="The same three users, each compared against their own baseline. Only the user with a real change is flagged."
+                  ></div>
+                </div>
+              </figure>
+            </div>
+
+            <div class="chips terms-line reveal">
+              <span class="chip">user-conditioned embeddings</span>
+              <span class="chip">temporal state estimation</span>
+              <span class="chip">change-point detection</span>
+              <span class="chip">retrieval-augmented memory</span>
+              <span class="chip">uncertainty estimation</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pinned statement, words fill on scroll -->
+        <section class="statement" id="why">
+          <div class="statement-inner">
+            <div class="wrap">
+              <div class="label">Why longitudinal</div>
+              <h2 class="statement-text">
+                The longer it knows you, the better it can help.
+              </h2>
+              <div class="statement-foot">
+                <p>Every conversation refines</p>
+                <div class="chips">
+                  <span class="chip">your baseline</span>
+                  <span class="chip">your patterns</span>
+                  <span class="chip">what helps you</span>
+                  <span class="chip">what doesn’t</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Research -->
+        <section class="section" id="research">
+          <div class="wrap">
+            <div class="section-head reveal">
+              <span class="label">Related research</span>
+              <div>
+                <h2 class="h2">Work we build on.</h2>
+                <p class="body">External papers. Not Morrow publications.</p>
+              </div>
+            </div>
+
+            <div class="papers">
+              <a
+                class="paper reveal"
+                href="https://arxiv.org/abs/2307.14385"
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="paper-top">
+                  <span class="label">Mental-health prediction</span
+                  ><span class="label">2023</span>
+                </div>
+                <h3 class="paper-title">
+                  Mental-LLM: Leveraging Large Language Models for Mental Health
+                  Prediction via Online Text Data
+                </h3>
+                <div class="paper-foot">
+                  <span>arXiv:2307.14385</span><span class="go">↗</span>
+                </div>
+              </a>
+              <a
+                class="paper reveal"
+                data-delay="1"
+                href="https://arxiv.org/abs/2310.11374"
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="paper-top">
+                  <span class="label">Emotion recognition</span
+                  ><span class="label">2023</span>
+                </div>
+                <h3 class="paper-title">
+                  DialogueLLM: Context and Emotion Knowledge-Tuned Large
+                  Language Models for Emotion Recognition in Conversations
+                </h3>
+                <div class="paper-foot">
+                  <span>arXiv:2310.11374</span><span class="go">↗</span>
+                </div>
+              </a>
+              <a
+                class="paper reveal"
+                href="https://arxiv.org/abs/2406.06474"
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="paper-top">
+                  <span class="label">Personal health modeling</span
+                  ><span class="label">2024</span>
+                </div>
+                <h3 class="paper-title">
+                  Towards a Personal Health Large Language Model
+                </h3>
+                <div class="paper-foot">
+                  <span>arXiv:2406.06474</span><span class="go">↗</span>
+                </div>
+              </a>
+              <a
+                class="paper reveal"
+                data-delay="1"
+                href="https://arxiv.org/abs/2501.08851"
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="paper-top">
+                  <span class="label">Digital phenotyping</span
+                  ><span class="label">2025</span>
+                </div>
+                <h3 class="paper-title">
+                  Digital Phenotyping for Adolescent Mental Health: A
+                  Feasibility Study Employing Machine Learning to Predict Mental
+                  Health Risk From Active and Passive Smartphone Data
+                </h3>
+                <div class="paper-foot">
+                  <span>arXiv:2501.08851</span><span class="go">↗</span>
+                </div>
+              </a>
+            </div>
+
+            <div class="note reveal">
+              <span></span>
+              <a class="textlink" href="research.html">Our research notes →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Company -->
+        <section class="section" id="company">
+          <div class="wrap">
+            <div class="section-head reveal">
+              <span class="label">Company</span>
+              <h2 class="h2">A small team in San Francisco.</h2>
+            </div>
+
+            <div class="people">
+              <div class="person reveal">
+                <!-- PROFILE PHOTO (CEO): put a square image at site/assets/team/ceo.jpg,
+                 then delete the "—" below and uncomment the <img> line. Update alt with the person's name. -->
+                <div class="avatar">
+                  <img
+                    src="assets/team/ceo.jpg"
+                    alt="David Klingbeil, CEO"
+                    width="160"
+                    height="160"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="name">David Klingbeil</div>
+                <div class="role">Founder / CEO</div>
+              </div>
+              <div class="person reveal" data-delay="1">
+                <!-- PROFILE PHOTO (CTO): put a square image at site/assets/team/cto.jpg,
+                 then delete the "—" below and uncomment the <img> line. Update alt with the person's name. -->
+                <div class="avatar">
+                  <img
+                    src="assets/team/cto.jpg"
+                    alt="Founder Name, CTO"
+                    width="160"
+                    height="160"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="name">Alexandra-Anthea Schlang</div>
+                <div class="role">Founder / CTO</div>
+              </div>
+              <div class="person reveal" data-delay="2">
+                <!-- PROFILE PHOTO (Behavioral Science): put a square image at site/assets/team/behavioral-science.jpg,
+                 then delete the "—" below and uncomment the <img> line. Update alt with the person's name. -->
+                <div class="avatar">
+                  —
+                  <!-- <img src="assets/team/behavioral-science.jpg" alt="Founder Name, Behavioral Science" width="160" height="160" loading="lazy"> -->
+                </div>
+                <div class="name">Founder Name</div>
+                <div class="role">Founder / Behavioral Science</div>
+              </div>
+            </div>
+
+            <div class="funding reveal">
+              <div>
+                <span class="label">Backed by</span>
+                <ul class="backers">
+                  <li>Gradient North</li>
+                  <li>Common Thread Ventures</li>
+                  <li>Firstlight Capital</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="cta" id="join">
+          <div class="wrap">
+            <h2 class="display reveal">Understand yourself sooner.</h2>
+
+            <div class="reveal" data-delay="1">
+              <form
+                class="join"
+                name="research-preview"
+                method="POST"
+                action="thanks.html"
+                data-netlify="true"
+                netlify-honeypot="company-url"
+              >
+                <input
+                  type="hidden"
+                  name="form-name"
+                  value="research-preview"
+                />
+                <p class="hp">
+                  <label
+                    >Leave blank
+                    <input name="company-url" tabindex="-1" autocomplete="off"
+                  /></label>
+                </p>
+                <label for="email" class="hp">Email address</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required
+                />
+                <button class="btn btn-primary" type="submit">
+                  Join research preview
+                </button>
+              </form>
+              <p class="form-status" role="status" aria-live="polite"></p>
+            </div>
+
+            <p class="fineprint reveal">
+              Research-stage technology. Not a diagnostic service or replacement
+              for professional mental-health care.
+            </p>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div class="wrap">
+            <div class="footer-inner">
+              <span>© 2026 Morrow Labs, Inc.</span>
+              <nav class="footer-links" aria-label="Footer">
+                <a href="research.html">Research</a>
+                <a href="#approach">Approach</a>
+                <a href="#company">Company</a>
+                <a href="#join">Research preview</a>
+              </nav>
+            </div>
+            <p class="crisis">
+              <strong>If you’re in crisis,</strong> Morrow is not the right
+              place. In the US, call or text 988 to reach the Suicide &amp;
+              Crisis Lifeline, or call 911 in an emergency.
+            </p>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <script src="assets/main.js" defer></script>
+  </body>
+</html>

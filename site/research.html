@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research — Morrow</title>
+  <meta name="description" content="Working notes on the Personal Affect Model: longitudinal user representations, latent state estimation, change-point detection, uncertainty-aware inference, and therapist retrieval.">
+  <meta name="theme-color" content="#fafaf7">
+  <meta property="og:title" content="Research — Morrow">
+  <meta property="og:description" content="Working notes on within-person modeling of affect and behavior.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="./" aria-label="Morrow home">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 15.5a7 7 0 0 1 14 0" stroke="#121211" stroke-width="1.6"/><path d="M2.5 15.5h19" stroke="#121211" stroke-width="1.6"/><path d="M7 19h10" stroke="#c4532e" stroke-width="1.6"/></svg>
+      Morrow
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="hide-sm" href="./#approach">Approach</a>
+      <a class="hide-sm" href="./#modeling">Modeling</a>
+      <a href="research.html" aria-current="page">Research</a>
+      <a class="hide-sm" href="./#company">Company</a>
+      <a class="btn btn-primary btn-sm" href="./#join">Join preview</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="r-hero">
+    <div class="wrap">
+      <span class="label reveal">Research notes</span>
+      <h1 class="display reveal" data-delay="1" style="margin-top:24px">Modeling a person, not a population.</h1>
+      <p class="lede reveal" data-delay="2" style="margin-top:28px">
+        Working notes on the Personal Affect Model (PAM), our system for learning a longitudinal representation of an individual and detecting meaningful change within it.
+      </p>
+      <div class="r-meta reveal" data-delay="3">
+        <span>Status <b>working draft, v0.4</b></span>
+        <span>Updated <b>September 2026</b></span>
+        <span>Evaluation <b>Morrow internal, not peer-reviewed</b></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap r-layout">
+    <aside class="toc" aria-label="Contents">
+      <span class="label">Contents</span>
+      <ol>
+        <li><a href="#hypothesis"><span>01</span>Hypothesis</a></li>
+        <li><a href="#architecture"><span>02</span>Architecture</a></li>
+        <li><a href="#state"><span>03</span>Latent state</a></li>
+        <li><a href="#baselines"><span>04</span>Personalized baselines</a></li>
+        <li><a href="#shift"><span>05</span>Change detection</a></li>
+        <li><a href="#uncertainty"><span>06</span>Uncertainty</a></li>
+        <li><a href="#memory"><span>07</span>Memory</a></li>
+        <li><a href="#matching"><span>08</span>Therapist retrieval</a></li>
+        <li><a href="#evaluation"><span>09</span>Evaluation</a></li>
+        <li><a href="#limitations"><span>10</span>Limitations</a></li>
+        <li><a href="#related"><span>11</span>Related work</a></li>
+      </ol>
+    </aside>
+
+    <article class="prose">
+
+      <section id="hypothesis">
+        <span class="label">01</span>
+        <h2>Hypothesis</h2>
+        <p>
+          Most language-based mental-health models are trained as population-level classifiers. Given a message or a session, they predict a label such as elevated depressive symptoms, and they judge every input against the same decision boundary. This works poorly for individuals. Between-person variance in expressed affect is large, and most of it is not clinically meaningful. Someone who is usually terse and flat is not in crisis because they are terse and flat today.
+        </p>
+        <p>
+          <strong>Our hypothesis is that clinically relevant signal lives mostly in within-person change.</strong> If a model has seen enough of one person’s history, it can tell apart a new pattern, an ordinary bad week, and that person’s normal. A population model cannot draw these distinctions.
+        </p>
+        <p>
+          This changes the modeling problem. Classification becomes state estimation, and thresholding becomes change-point inference. Evaluation has to measure detection of within-subject change, not accuracy on held-out users.
+        </p>
+      </section>
+
+      <section id="architecture">
+        <span class="label">02</span>
+        <h2>Architecture</h2>
+        <p>
+          PAM has four learned components and one policy layer. A session encoder maps each conversation to an embedding, conditioned on a persistent user embedding and on retrieved memory. <strong>PAM-State</strong> filters these embeddings into a latent state with uncertainty. <strong>PAM-Shift</strong> infers whether that state has departed from the user’s baseline. An escalation policy decides whether to ask, wait, or recommend human support.
+        </p>
+
+        <figure class="figure">
+          <div class="figure-bar"><span>Fig. 2 — PAM system overview</span><span>per session t, user u</span></div>
+          <div class="scroll-x">
+            <svg class="arch" viewBox="0 34 900 268" fill="none" role="img" aria-label="Architecture: session transcript flows through encoder, PAM-State, PAM-Shift, escalation gate, and therapist retrieval; user embedding, memory store, and personalized baseline feed in from below.">
+              <defs>
+                <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="#6b6b65"/></marker>
+                <marker id="aha" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8 z" fill="#c4532e"/></marker>
+              </defs>
+
+              <!-- row 1 -->
+              <g>
+                <rect x="14" y="54" width="118" height="62" rx="7" fill="#fafaf7" stroke="#d8d7cf" stroke-dasharray="3 3"/>
+                <text x="26" y="80">Session</text><text class="sub" x="26" y="98">xᵤ,ₜ</text>
+
+                <rect x="164" y="54" width="118" height="62" rx="7" fill="#fff" stroke="#d8d7cf"/>
+                <text x="176" y="80">Encoder</text><text class="sub" x="176" y="98">hᵤ,ₜ</text>
+
+                <rect x="314" y="54" width="118" height="62" rx="7" fill="#fff" stroke="#121211"/>
+                <text x="326" y="80">PAM-State</text><text class="sub" x="326" y="98">ẑₜ, Pₜ</text>
+
+                <rect x="464" y="54" width="118" height="62" rx="7" fill="#fff" stroke="#121211"/>
+                <text x="476" y="80">PAM-Shift</text><text class="sub" x="476" y="98">p(rₜ | ·)</text>
+
+                <rect x="614" y="54" width="118" height="62" rx="7" fill="#fff" stroke="#d8d7cf"/>
+                <text x="626" y="80">Escalation</text><text class="sub" x="626" y="98">ask · wait · refer</text>
+
+                <rect x="764" y="54" width="122" height="62" rx="7" fill="#fff" stroke="#c4532e"/>
+                <text x="776" y="80">Therapist</text><text class="sub" x="776" y="98">retrieve · rank</text>
+              </g>
+              <g stroke="#6b6b65" stroke-width="1.2" marker-end="url(#ah)">
+                <path d="M132 85 H160"/><path d="M282 85 H310"/><path d="M432 85 H460"/><path d="M582 85 H610"/>
+              </g>
+              <path d="M732 85 H760" stroke="#c4532e" stroke-width="1.2" marker-end="url(#aha)"/>
+
+              <!-- row 2 -->
+              <g>
+                <rect x="164" y="220" width="118" height="62" rx="7" fill="#f2f1ec" stroke="#e7e6e0"/>
+                <text x="176" y="246">Memory Mᵤ</text><text class="sub" x="176" y="264">episodic store</text>
+
+                <rect x="314" y="220" width="118" height="62" rx="7" fill="#f2f1ec" stroke="#e7e6e0"/>
+                <text x="326" y="246">User emb. eᵤ</text><text class="sub" x="326" y="264">slow-updating</text>
+
+                <rect x="464" y="220" width="118" height="62" rx="7" fill="#f2f1ec" stroke="#e7e6e0"/>
+                <text x="476" y="246">Baseline</text><text class="sub" x="476" y="264">μᵤ, Σᵤ</text>
+
+                <rect x="614" y="220" width="118" height="62" rx="7" fill="#fafaf7" stroke="#d8d7cf" stroke-dasharray="3 3"/>
+                <text x="626" y="246">Clarify</text><text class="sub" x="626" y="264">abstain, ask user</text>
+              </g>
+              <g stroke="#6b6b65" stroke-width="1.2" marker-end="url(#ah)">
+                <path d="M208 220 V120"/>
+                <path d="M340 220 L262 120"/>
+                <path d="M373 220 V120"/>
+                <path d="M523 220 V120"/>
+                <path d="M673 116 V216"/>
+              </g>
+              <g stroke="#9b9a93" stroke-width="1.1" stroke-dasharray="4 3" marker-end="url(#ah)">
+                <path d="M400 116 C430 170 470 170 500 216"/>
+                <path d="M338 116 C300 160 270 170 250 216"/>
+              </g>
+              <text class="edge-label" x="216" y="178">retrieve</text>
+              <text class="edge-label" x="262" y="160" text-anchor="end">write</text>
+              <text class="edge-label" x="454" y="168">slow update</text>
+              <text class="edge-label" x="531" y="178">compare</text>
+              <text class="edge-label" x="681" y="178">if uncertain</text>
+</svg>
+          </div>
+        </figure>
+        <p class="caption"><b>Fig. 2.</b> Solid edges run every session. Dashed edges update on slower timescales. The baseline is deliberately decoupled from the state so that a gradual change is not absorbed into “normal.”</p>
+
+        <div class="defs">
+          <div><b>PAM</b><span>Personal Affect Model. The full per-user system.</span></div>
+          <div><b>PAM-State</b><span>Temporal state estimator over session embeddings.</span></div>
+          <div><b>PAM-Shift</b><span>Change-point inference relative to a personalized baseline.</span></div>
+          <div><b>PAM-24</b><span>Our internal 24-week within-subject evaluation protocol.</span></div>
+        </div>
+        <p>
+          Internally we sometimes call a user’s fitted PAM an <em>emotional digital twin</em>. We avoid the term in product because it overstates fidelity. The model is a compressed, uncertain summary of what someone has chosen to tell us, not a simulation of them.
+        </p>
+      </section>
+
+      <section id="state">
+        <span class="label">03</span>
+        <h2>Latent state estimation</h2>
+        <p>
+          We model each user as a low-dimensional latent state that evolves over time. We observe it only through conversations. Let <span>\(x_{u,t}\)</span> be user <span>\(u\)</span>’s session at time <span>\(t\)</span>, and let <span>\(e_u\)</span> be a user embedding that is learned jointly and updated slowly.
+        </p>
+        <div class="eq">
+          $$h_{u,t} = g_\phi\big(x_{u,t},\ \mathrm{Retr}(M_u, x_{u,t}),\ e_u\big)$$
+          <span class="eqn">(1)</span>
+        </div>
+        <div class="eq">
+          $$z_{u,t} = f_\theta\big(z_{u,t-1},\ \Delta_t,\ e_u\big) + \varepsilon_t, \qquad h_{u,t} = C_u\, z_{u,t} + \eta_t$$
+          <span class="eqn">(2)</span>
+        </div>
+        <p>
+          Here <span>\(\Delta_t\)</span> is the irregular gap between sessions. Users don’t talk to us on a schedule, and the transition model has to account for that. We use a neural state-space model with a learned transition and a user-conditioned emission <span>\(C_u\)</span>. Inference uses an amortized filter that outputs a mean <span>\(\hat z_t\)</span> and covariance <span>\(P_t\)</span>. We keep <span>\(\dim z = 16\)</span>. Two leading components are loosely aligned with valence and activation through a weak auxiliary loss on self-report, but we don’t treat any dimension as a validated construct.
+        </p>
+        <p>
+          The session encoder is a frozen pretrained language model with a lightweight adapter. The adapter is trained to predict the next session’s embedding and the user’s self-reported state. Conditioning on <span>\(e_u\)</span> matters most in the encoder. The same sentence carries different information from different people.
+        </p>
+      </section>
+
+      <section id="baselines">
+        <span class="label">04</span>
+        <h2>Personalized baselines</h2>
+        <p>
+          A baseline is a distribution over a user’s latent state during a reference period, <span>\(\mathcal{N}(\mu_u, \Sigma_u)\)</span>. It is estimated with exponential forgetting and shrinks toward a population prior when data are scarce. We measure deviation as a Mahalanobis distance under the filter’s own uncertainty:
+        </p>
+        <div class="eq">
+          $$d_{u,t} = (\hat z_{u,t} - \mu_u)^{\top}\,(\Sigma_u + P_t)^{-1}\,(\hat z_{u,t} - \mu_u)$$
+          <span class="eqn">(3)</span>
+        </div>
+        <p>
+          Baselines need data. Before about <span>\(n_0 = 21\)</span> sessions, the error is too large for deviations to mean much. Until then Morrow only reflects and never flags. Internal evaluation suggests baseline error falls roughly as <span>\(1/\sqrt{n}\)</span> in session count. It plateaus at a floor set mostly by how much users share in each session.
+        </p>
+
+        <figure class="figure">
+          <div class="figure-bar"><span>Fig. 3 — Baseline estimation error vs. sessions</span><span>Morrow internal evaluation</span></div>
+          <div class="figure-body"><div class="chart chart-sm" data-chart="baseline-error" data-label="Normalized baseline estimation error falling with session count, with lower floors for users in higher disclosure-depth terciles."></div></div>
+        </figure>
+        <p class="caption"><b>Fig. 3.</b> Normalized RMSE of <span>\(\hat\mu_u\)</span> against a held-out reference, stratified by disclosure-depth tercile. Disclosure depth is an annotator-rated score of how much personal information a session contains. PAM-24 cohort, n = 214.</p>
+        <p>
+          The dependence on disclosure is the strongest effect we’ve measured. More sessions help. Sessions where people say more about what is actually going on help much more.
+        </p>
+      </section>
+
+      <section id="shift">
+        <span class="label">05</span>
+        <h2>Change detection</h2>
+        <p>
+          PAM-Shift runs Bayesian online change-point detection over the filtered state. It maintains a posterior over the run length <span>\(r_t\)</span>, the time since the last regime change:
+        </p>
+        <div class="eq">
+          $$p(r_t \mid \hat z_{1:t}) \;\propto\; \sum_{r_{t-1}} p\big(\hat z_t \mid r_{t-1}, \hat z^{(r)}\big)\; H(r_t \mid r_{t-1})\; p(r_{t-1} \mid \hat z_{1:t-1})$$
+          <span class="eqn">(4)</span>
+        </div>
+        <p>
+          The hazard <span>\(H\)</span> is learned per user from a population prior. A single low session should not count as a change, so we flag only when the posterior mass on a recent change stays above <span>\(\alpha\)</span> for a minimum persistence window <span>\(w\)</span>. The default is 7 days.
+        </p>
+
+        <figure class="figure">
+          <div class="figure-bar"><span>Fig. 4 — Filtered state and change posterior</span><span>illustrative participant</span></div>
+          <div class="figure-body"><div class="chart chart-sm" data-chart="run-length" data-label="Top: filtered latent state leaving the baseline band after week 17. Bottom: posterior probability of a recent change per session, with a transient spike near week 11 that does not persist and a sustained rise after week 17."></div></div>
+        </figure>
+        <p class="caption"><b>Fig. 4.</b> Top: <span>\(\hat z_t\)</span> against the baseline band. Bottom: <span>\(p(r_t \le w)\)</span> per session. The spike near week 11 does not persist and does not trigger a flag.</p>
+      </section>
+
+      <section id="uncertainty">
+        <span class="label">06</span>
+        <h2>Uncertainty-aware inference</h2>
+        <p>
+          Every output of PAM carries uncertainty, and the escalation policy uses it directly. We calibrate change-point probabilities with split conformal prediction on held-out participant-weeks. When the model is uncertain, it abstains:
+        </p>
+        <div class="eq">
+          $$\text{action}_t = \begin{cases} \texttt{refer} & p(r_t \le w) > \alpha \ \text{for } w \text{ days and } \operatorname{tr}(P_t) < \kappa \\ \texttt{clarify} & p(r_t \le w) > \alpha \ \text{and } \operatorname{tr}(P_t) \ge \kappa \\ \texttt{wait} & \text{otherwise} \end{cases}$$
+          <span class="eqn">(5)</span>
+        </div>
+        <p class="callout">
+          When Morrow is unsure, it asks rather than infers. A clarifying question is cheap. A confident, wrong statement about someone’s mental state is not.
+        </p>
+        <p>
+          Explicit risk language skips this policy entirely. It routes to crisis resources through deterministic rules, not a learned model.
+        </p>
+      </section>
+
+      <section id="memory">
+        <span class="label">07</span>
+        <h2>Retrieval-based memory</h2>
+        <p>
+          Stable facts about a person, such as relationships, recurring stressors, and past coping strategies, are stored as episodic memory entries rather than packed into model weights. At each session the encoder retrieves the top-<span>\(k\)</span> entries:
+        </p>
+        <div class="eq">
+          $$s(m) = \cos(q_t, k_m) + \lambda \, e^{-(t - t_m)/\tau} + \beta\, \sigma_m$$
+          <span class="eqn">(6)</span>
+        </div>
+        <p>
+          The score combines semantic similarity, recency, and a learned salience term <span>\(\sigma_m\)</span>. Memory lets Morrow ask about things that matter to you without making you explain them again. Users can inspect, edit, and delete any memory entry. A deletion also removes the entry’s contribution to <span>\(e_u\)</span> at the next slow update.
+        </p>
+      </section>
+
+      <section id="matching">
+        <span class="label">08</span>
+        <h2>Therapist retrieval and ranking</h2>
+        <p>
+          When the policy returns <code>refer</code>, or when a user asks, we recommend clinicians in two stages. Hard filters come first: licensure in the user’s state, insurance or cost constraints, accepting new clients, and age focus. A learned ranker then orders the candidates that remain:
+        </p>
+        <div class="eq">
+          $$\mathrm{score}(u, c) = w^{\top}\phi(u, c), \qquad \phi = \big[\,\phi_{\text{modality}},\ \phi_{\text{spec}},\ \phi_{\text{lang}},\ \phi_{\text{avail}},\ \langle e_u^{\text{style}}, e_c^{\text{style}}\rangle,\ \phi_{\text{pref}}\,\big]$$
+          <span class="eqn">(7)</span>
+        </div>
+        <p>
+          The style term compares a projection of the user embedding with a clinician embedding. The clinician embedding comes from clinician-authored profile text, not from session content. Stated preferences, such as a therapist’s gender, identity, or approach, act as constraints rather than soft features, and always take priority over the model. Clinicians see nothing from a user’s Morrow history unless the user explicitly shares it.
+        </p>
+        <p>
+          We plan to train the ranker on early-retention signals: whether a user attends a second and a third session. These are imperfect proxies for alliance, but they are available and hard to game.
+        </p>
+      </section>
+
+      <section id="evaluation">
+        <span class="label">09</span>
+        <h2>Within-subject evaluation</h2>
+        <p>
+          Standard held-out-user accuracy rewards a model for sorting people, not for noticing change. <strong>PAM-24</strong> is our internal protocol. Consenting participants aged 18–29 use Morrow for 24 weeks and complete the PHQ-9 and GAD-7 every two weeks. A reference change point is a sustained shift of ≥5 points on either instrument across two consecutive assessments. The window for a correct detection is ±7 days.
+        </p>
+
+        <div class="tablewrap">
+          <div class="figure-bar"><span>Table 1 — PAM-24 results</span><span>Morrow internal evaluation · n = 214</span></div>
+          <table>
+            <thead>
+              <tr><th>Model</th><th>CP-F1 ↑</th><th>Delay (d) ↓</th><th>False alerts/yr ↓</th><th>ECE ↓</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Population classifier, per session</td><td class="num">0.31<span class="ci">±.05</span></td><td class="num">19.0</td><td class="num">6.8</td><td class="num">.142</td></tr>
+              <tr><td>Population + 30-day context</td><td class="num">0.42<span class="ci">±.05</span></td><td class="num">14.5</td><td class="num">4.9</td><td class="num">.118</td></tr>
+              <tr><td>PAM-State, no user embedding</td><td class="num">0.51<span class="ci">±.04</span></td><td class="num">11.0</td><td class="num">3.1</td><td class="num">.087</td></tr>
+              <tr><td>PAM-State + PAM-Shift</td><td class="num">0.64<span class="ci">±.04</span></td><td class="num">8.5</td><td class="num">1.7</td><td class="num">.049</td></tr>
+              <tr class="best"><td>PAM-State + PAM-Shift + memory</td><td class="num">0.68<span class="ci">±.04</span></td><td class="num">7.0</td><td class="num">1.4</td><td class="num">.046</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption"><b>Table 1.</b> CP-F1 is change-point F1 within ±7 days. Delay is median days from the reference change to the first flag. False alerts are per user-year. ± shows 95% bootstrap intervals over participants. These results have not been independently validated or published.</p>
+
+        <div class="tablewrap">
+          <div class="figure-bar"><span>Table 2 — Performance by engagement</span><span>Morrow internal evaluation</span></div>
+          <table>
+            <thead>
+              <tr><th>Disclosure-depth tercile</th><th>Sessions / wk</th><th>Median words / session</th><th>CP-F1 ↑</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Low</td><td class="num">2.1</td><td class="num">180</td><td class="num">0.44</td></tr>
+              <tr><td>Mid</td><td class="num">3.8</td><td class="num">410</td><td class="num">0.67</td></tr>
+              <tr class="best"><td>High</td><td class="num">6.2</td><td class="num">960</td><td class="num">0.81</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption"><b>Table 2.</b> Full model, stratified by participant. Engagement and disclosure are confounded with baseline symptom severity. We have not yet separated these effects.</p>
+      </section>
+
+      <section id="limitations">
+        <span class="label">10</span>
+        <h2>Limitations and open questions</h2>
+        <ul>
+          <li><strong>Performance depends on engagement.</strong> Users who share less are modeled less well (Table 2). This may widen the gap between people who are already comfortable seeking help and people who aren’t.</li>
+          <li><strong>Self-report ground truth.</strong> PHQ-9 and GAD-7 are screening instruments, not diagnoses. Change points defined on them are a proxy.</li>
+          <li><strong>Small, self-selected cohort.</strong> PAM-24 participants chose to use a mental-health app for six months. They are not representative of young adults in general.</li>
+          <li><strong>Baseline drift.</strong> A slow decline over many months can still be absorbed into the baseline. We are testing multi-timescale baselines to address this.</li>
+          <li><strong>Matching outcomes.</strong> We don’t yet have enough referral outcomes to evaluate the ranker beyond offline relevance judgments from clinicians.</li>
+        </ul>
+      </section>
+
+      <section id="related">
+        <span class="label">11</span>
+        <h2>Related work</h2>
+        <p>External research that informs our approach. None of these papers are Morrow work.</p>
+        <ol class="refs">
+          <li><div><span class="t">Mental-LLM: Leveraging Large Language Models for Mental Health Prediction via Online Text Data.</span> Xu et al., 2023. <a href="https://arxiv.org/abs/2307.14385" target="_blank" rel="noopener">arXiv:2307.14385</a></div></li>
+          <li><div><span class="t">DialogueLLM: Context and Emotion Knowledge-Tuned Large Language Models for Emotion Recognition in Conversations.</span> Zhang et al., 2023. <a href="https://arxiv.org/abs/2310.11374" target="_blank" rel="noopener">arXiv:2310.11374</a></div></li>
+          <li><div><span class="t">Towards a Personal Health Large Language Model.</span> Cosentino et al., 2024. <a href="https://arxiv.org/abs/2406.06474" target="_blank" rel="noopener">arXiv:2406.06474</a></div></li>
+          <li><div><span class="t">Digital Phenotyping for Adolescent Mental Health: A Feasibility Study Employing Machine Learning to Predict Mental Health Risk From Active and Passive Smartphone Data.</span> Kadirvelu et al., 2025. <a href="https://arxiv.org/abs/2501.08851" target="_blank" rel="noopener">arXiv:2501.08851</a></div></li>
+        </ol>
+      </section>
+
+    </article>
+  </div>
+
+  <section class="cta" style="padding: clamp(80px, 10vw, 128px) 0">
+    <div class="wrap">
+      <h2 class="h2 reveal">Understand yourself sooner.</h2>
+      <div class="hero-ctas reveal" data-delay="1" style="justify-content:center">
+        <a class="btn btn-primary" href="./#join">Join research preview <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <p class="fineprint reveal">Research-stage technology. Not a diagnostic service or replacement for professional mental-health care.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <span>© 2026 Morrow Labs, Inc.</span>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="./">Home</a>
+        <a href="./#approach">Approach</a>
+        <a href="./#company">Company</a>
+        <a href="./#join">Research preview</a>
+      </nav>
+    </div>
+    <p class="crisis"><strong>If you’re in crisis,</strong> Morrow is not the right place. In the US, call or text 988 to reach the Suicide &amp; Crisis Lifeline, or call 911 in an emergency.</p>
+  </div>
+</footer>
+
+<script src="assets/main.js" defer></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.querySelector('.prose'), {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false});"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Netlify CLI (local deploy state and linked site id)
+.netlify/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Node (if tooling is added later)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs and scratch
+*.log
+.cache/
+tmp/
+
+# Claude Code local settings
+.claude/settings.local.json
