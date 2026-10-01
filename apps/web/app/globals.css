@@ -1,0 +1,88 @@
+:root {
+  --bg: #fafaf8;
+  --fg: #1c1c1a;
+  --muted: #77756f;
+  --line: #dddbd4;
+  --accent: #2f5d50;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.5 system-ui, sans-serif;
+}
+
+header,
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  color: inherit;
+}
+
+h1 {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  margin: 8px 0 24px;
+}
+
+.domains {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+
+.domains li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  text-transform: capitalize;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+button {
+  font: inherit;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+button[aria-pressed="true"],
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 20px;
+}

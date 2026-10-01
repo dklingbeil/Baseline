@@ -1,0 +1,19 @@
+name: Baseline
+options:
+  bundleIdPrefix: app.baseline
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  Baseline:
+    type: application
+    platform: iOS
+    sources: [Baseline]
+    settings:
+      base:
+        SWIFT_VERSION: "5.10"
+        GENERATE_INFOPLIST_FILE: YES
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_ENTITLEMENTS: Baseline/Baseline.entitlements
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "Baseline reads daily sleep, activity and heart summaries to learn what is normal for you. Only daily totals leave your phone."
